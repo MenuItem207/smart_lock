@@ -45,12 +45,16 @@ class Data:
     def run(self):
         match self.state:
             case State.SETUP:
+                # generate uuid and show user
                 _uuid = uuid.uuid4()
                 self.device.show_message("Login code:")
                 self.device.show_message(_uuid)
-                while (self.device.get_input() != "somerandomcharactertogonext"):
-                    pass
+
+                self.device.await_input(" ") # wait for user to press next
+
                 self.device.show_message("Set password in app")
+                
+                # update backend
                 self.db.child("devices").child(uuid).update({"passwords": [], "can_open": "false", "state": self.state.value})
                 self.update_state(State.IDLE)
                 pass
