@@ -35,7 +35,27 @@ class SizeHandler {
       fontWeight: FontWeight.w500,
       color: Colors.white,
     ),
+    headline3: GoogleFonts.montserrat(
+      fontSize: 35,
+      fontWeight: FontWeight.w200,
+      color: Colors.white,
+    ),
+    headline4: GoogleFonts.montserrat(
+      fontSize: 30,
+      fontWeight: FontWeight.w500,
+      color: Colors.white,
+    ),
+    headline5: GoogleFonts.montserrat(
+      fontSize: 25,
+      fontWeight: FontWeight.w500,
+      color: Colors.white,
+    ),
     bodyText1: GoogleFonts.montserrat(
+      fontSize: 25,
+      fontWeight: FontWeight.w200,
+      color: Colors.white,
+    ),
+    bodyText2: GoogleFonts.montserrat(
       fontSize: 25,
       fontWeight: FontWeight.w200,
       color: Colors.white,
