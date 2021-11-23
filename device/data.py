@@ -36,8 +36,8 @@ class Data:
         # get the data from the database
         data = list(self.db.child("devices").child(self.uuid).get().val().items())
         self.can_open = json.loads(data[0][1])
-        self.passwords = data[2][1]
-        self.state = State(data[3][1]) 
+        self.passwords = data[3][1]
+        self.state = State(data[4][1]) 
 
     # updates the current state of the logic
     def update_state(self, new_state):
