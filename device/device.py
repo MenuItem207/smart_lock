@@ -56,13 +56,20 @@ class Device:
         pass
 
     # input ------------------------------
-    def check_for_open(self, new_bool):
+    def check_for_open(self, on_is_open_changed):
         # TODO: add logic to check if the device is open
         new_bool = False
 
+        if self.is_test_mode:
+            result = self.test_input("Enter 1 to set as open, 0 to set as closed")
+            if result == "1":
+                new_bool = True
+            elif result == "0":
+                new_bool = False
+
         if self.is_open != new_bool:
             self.is_open = new_bool
-            self.on_is_open_changed(new_bool)
+            on_is_open_changed(new_bool)
             self.test_print("is_open: " + str(new_bool))
         pass
 
