@@ -11,6 +11,12 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  get: ^4.3.8
+  get_storage: ^2.0.3
+
+  firebase_database: ^8.1.0
+
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -20,3 +26,7 @@ dev_dependencies:
 flutter:
 
   uses-material-design: true
+  fonts:
+    - family: CustomIcons # the name of your font family
+      fonts:
+        - asset: assets/CustomIcons.ttf # your font file name and the directory
