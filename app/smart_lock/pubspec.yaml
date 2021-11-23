@@ -15,6 +15,10 @@ dependencies:
   get_storage: ^2.0.3
 
   firebase_database: ^8.1.0
+  
+  google_fonts: ^2.1.0
+  simple_animations: ^4.0.1
+
 
 
 dev_dependencies:

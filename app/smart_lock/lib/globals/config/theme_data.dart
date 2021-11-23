@@ -1,12 +1,31 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 /// global theme data
 final ThemeData themeData = ThemeData(
-    primaryColor: _backgroundColour,
-    scaffoldBackgroundColor: _backgroundColour,
-    highlightColor: _blue,
-    focusColor: _gold,
-    errorColor: _red);
+  primaryColor: _backgroundColour,
+  scaffoldBackgroundColor: _backgroundColour,
+  highlightColor: _blue,
+  focusColor: _gold,
+  errorColor: _red,
+  textTheme: TextTheme(
+    headline1: GoogleFonts.montserrat(
+      fontSize: 55,
+      fontWeight: FontWeight.w200,
+      color: _white,
+    ),
+    headline2: GoogleFonts.montserrat(
+      fontSize: 35,
+      fontWeight: FontWeight.w500,
+      color: _white,
+    ),
+    bodyText1: GoogleFonts.montserrat(
+      fontSize: 25,
+      fontWeight: FontWeight.w200,
+      color: _white,
+    ),
+  ),
+);
 
 const Color _backgroundColour = Color(0xFF2C2F36);
 const Color _blue = Color(0xFF5E83BA);
