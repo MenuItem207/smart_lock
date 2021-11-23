@@ -13,7 +13,7 @@ from credentials.firebase_config import config
 # handles the different states of the logic
 class Data:
     def __init__(self) -> None:
-        self.test = Test(TestMode.NORMAL)
+        self.test = Test(TestMode.NORMAL) # change this to set test mode 
         self.uuid = self.test.id # the uuid of the device
         self.state = self.test.state  # the current state of the logic
 
