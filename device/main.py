@@ -1,4 +1,4 @@
-from device.data import Data
+from data import Data
 
 
 def main():

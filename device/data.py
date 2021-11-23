@@ -2,8 +2,8 @@ import json
 import pyrebase
 import uuid
 
-from device.states import State
-from device.device import Device
+from states import State
+from device import Device
 
 from credentials.firebase_config import config
 
@@ -19,48 +19,61 @@ class Data:
         # backend
         firebase = pyrebase.initialize_app(config)
         self.db = firebase.database()
-        self.db.child("devices").child(uuid).stream(self.sync_data)
     
     # logic that syncs data with database
     def sync_data(self, message):
+        print('data received from backend')
         # see this post for more info:
         # stackoverflow.com/questions/49863708/python-firebase-realtime-listener
         
         # get the data from the database
+        print("Decoding")
         data = message["data"]
         passwords = data["passwords"] 
         self.can_open = json.loads(data["can_open"])
-        self.state = State(json.loads(data["state"]))
+        self.state = State(data["state"])
+        print("sucessful decoding")
 
     # updates the current state of the logic
     def update_state(self, new_state):
         self.state = new_state
-        self.db.child("devices").child(uuid).update({"state": new_state.value})
+        self.db.child("devices").child(self.uuid).update({"state": new_state.value})
         
-    # run when the device is opened or closed
+    # state functions
+
+    # called when the device is first set up
+    def setup(self):
+        # generate uuid and show user
+        print('generating uuid')
+        _uuid = uuid.uuid4()
+        self.device.show_message("Login code:")
+        self.device.show_message(_uuid)
+        self.uuid = _uuid
+        print('awaiting input')
+        self.device.await_input(" ") # wait for user to press next
+        self.device.show_message("Set password in app")
+        # update backend
+        print('creating user')
+        print(_uuid)
+        self.db.child("devices").child(_uuid).update({"passwords": "[]", "can_open": "false", "state": self.state.value})
+        print('created')
+        self.update_state(State.IDLE)
+        # init stream
+        print('initialising stream')
+        self.db.child("devices").child(self.uuid).stream(self.sync_data)
+
+    # run when the device is in IDLE state and the user opens or closes the device 
     def on_is_open_change(self, new_bool: bool):
-        self.db.child("devices").child(uuid).update({"is_open": new_bool})
+        self.db.child("devices").child(self.uuid).update({"is_open": new_bool})
 
     # runs the logic
     def run(self):
+        print(self.state)
         match self.state:
             case State.SETUP:
-                # generate uuid and show user
-                _uuid = uuid.uuid4()
-                self.device.show_message("Login code:")
-                self.device.show_message(_uuid)
-
-                self.device.await_input(" ") # wait for user to press next
-
-                self.device.show_message("Set password in app")
-                
-                # update backend
-                self.db.child("devices").child(uuid).update({"passwords": [], "can_open": "false", "state": self.state.value})
-                self.update_state(State.IDLE)
-                pass
+                self.setup()
             case State.IDLE:
                 self.device.update_device_states(self.can_open, self.on_is_open_change)
-                pass
             case State.PASSWORD:
                 # TODO: code for entering password
                 pass

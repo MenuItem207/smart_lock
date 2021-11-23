@@ -7,7 +7,6 @@ class Device:
     # logic that updates the device states
     # returns is_open
     def update_device_states(self, can_open: bool, on_is_open_changed) -> bool:
-
         self.check_for_open(on_is_open_changed)
 
         if self.is_open:
@@ -55,7 +54,7 @@ class Device:
         pass
 
     # input ------------------------------
-    def check_for_open(self):
+    def check_for_open(self, new_bool):
         # TODO: add logic to check if the device is open
         new_bool = False
 
