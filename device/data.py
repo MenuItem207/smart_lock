@@ -36,8 +36,8 @@ class Data:
         # get the data from the database
         data = list(self.db.child("devices").child(self.uuid).get().val().items())
         self.can_open = json.loads(data[0][1])
-        self.passwords = data[1][1]
-        self.state = State(data[2][1]) 
+        self.passwords = data[2][1]
+        self.state = State(data[3][1]) 
 
     # updates the current state of the logic
     def update_state(self, new_state):
@@ -59,7 +59,7 @@ class Data:
         self.device.show_message("Set password in app")
         # update backend
         print('creating user: %s', self.uuid)
-        self.db.child("devices").child(_uuid).update({"passwords": "[]", "can_open": "false", "state": self.state.value})
+        self.db.child("devices").child(_uuid).update({"passwords": "[]", "can_open": "false", "state": self.state.value, "is_open": "false"})
         print('created')
         self.update_state(State.IDLE)
         # init stream
@@ -68,7 +68,7 @@ class Data:
 
     # run when the device is in IDLE state and the user opens or closes the device 
     def on_is_open_change(self, new_bool: bool):
-        self.db.child("devices").child(self.uuid).update({"is_open": new_bool})
+        self.db.child("devices").child(self.uuid).update({"is_open": json.dumps(new_bool)})
 
     # runs the logic
     def run(self, old_state, on_state_changed):

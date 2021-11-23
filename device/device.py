@@ -10,6 +10,7 @@ class Device:
     def update_device_states(self, can_open: bool, on_is_open_changed):
         self.check_for_open(on_is_open_changed)
 
+        print(can_open)
         if self.is_open:
             if can_open:
                 self.stop_alarm()
