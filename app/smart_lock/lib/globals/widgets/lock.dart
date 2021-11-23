@@ -39,7 +39,7 @@ class Lock extends StatelessWidget {
                             otherColor,
                             Theme.of(context).focusColor,
                           ],
-                          stops: [0.5, 1],
+                          stops: const [0.5, 1],
                           begin: Alignment.topCenter,
                           end: Alignment.bottomCenter,
                         ),

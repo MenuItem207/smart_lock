@@ -18,7 +18,7 @@ class Storage extends GetxController {
   }
 
   /// id of the device
-  Rx<String?> id = null.obs;
+  Rx<String?> id = Rx<String?>(null);
 
   /// updates the id of the device
   void updateID(String id) {
