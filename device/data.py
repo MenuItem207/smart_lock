@@ -2,6 +2,9 @@ import json
 import pyrebase
 import uuid
 
+from test import Test
+from test_mode import TestMode
+
 from states import State
 from device import Device
 
@@ -10,15 +13,19 @@ from credentials.firebase_config import config
 # handles the different states of the logic
 class Data:
     def __init__(self) -> None:
+        self.test = Test(TestMode.NORMAL)
+        self.uuid = self.test.id # the uuid of the device
+        self.state = self.test.state  # the current state of the logic
+
         self.can_open = False  # whether or not the device is allowed to be opened
         self.device = Device(True)  # the device object
-        self.state = State.SETUP  # the current state of the logic
         self.passwords = []  # the list of passwords that work, the first index is the default password
-        self.uuid = "" # the uuid of the device
+        print("uuid: %s" % (self.uuid))
         
         # backend
         firebase = pyrebase.initialize_app(config)
         self.db = firebase.database()
+        if (self.test.test_mode == TestMode.NORMAL): self.db.child("devices").child(self.uuid).stream(self.sync_data)
     
     # logic that syncs data with database
     def sync_data(self, message):

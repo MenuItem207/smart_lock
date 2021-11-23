@@ -6,3 +6,4 @@ class State(enum.Enum):
     IDLE = 2  # state for normal device operation
     PASSWORD = 3  # state for entering the password
     DISABLED = 4  # state for disabling the device
+    NOTHING = 5  # state meant for testing purposes

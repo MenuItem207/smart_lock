@@ -8,7 +8,7 @@ def main():
         data.run(old_state, on_state_change)
 
 
-old_state = State.IDLE  # remembers the last state
+old_state = State.NOTHING  # remembers the last state
 
 
 def on_state_change(new_state: State):
