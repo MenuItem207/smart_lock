@@ -11,7 +11,7 @@ from credentials.firebase_config import config
 class Data:
     def __init__(self) -> None:
         self.can_open = False  # whether or not the device is allowed to be opened
-        self.device = Device()  # the device object
+        self.device = Device(True)  # the device object
         self.state = State.SETUP  # the current state of the logic
         self.passwords = []  # the list of passwords that work, the first index is the default password
         self.uuid = "" # the uuid of the device
@@ -27,12 +27,10 @@ class Data:
         # stackoverflow.com/questions/49863708/python-firebase-realtime-listener
         
         # get the data from the database
-        print("Decoding")
-        data = message["data"]
-        passwords = data["passwords"] 
-        self.can_open = json.loads(data["can_open"])
-        self.state = State(data["state"])
-        print("sucessful decoding")
+        data = list(self.db.child("devices").child(self.uuid).get().val().items())
+        self.can_open = json.loads(data[0][1])
+        self.passwords = data[1][1]
+        self.state = State(data[2][1]) 
 
     # updates the current state of the logic
     def update_state(self, new_state):
@@ -47,14 +45,13 @@ class Data:
         print('generating uuid')
         _uuid = uuid.uuid4()
         self.device.show_message("Login code:")
-        self.device.show_message(_uuid)
+        self.device.show_message(str(_uuid))
         self.uuid = _uuid
         print('awaiting input')
-        self.device.await_input(" ") # wait for user to press next
+        self.device.await_input("a") # wait for user to press next
         self.device.show_message("Set password in app")
         # update backend
-        print('creating user')
-        print(_uuid)
+        print('creating user: %s', self.uuid)
         self.db.child("devices").child(_uuid).update({"passwords": "[]", "can_open": "false", "state": self.state.value})
         print('created')
         self.update_state(State.IDLE)
@@ -67,8 +64,10 @@ class Data:
         self.db.child("devices").child(self.uuid).update({"is_open": new_bool})
 
     # runs the logic
-    def run(self):
-        print(self.state)
+    def run(self, old_state, on_state_changed):
+        if old_state != self.state:
+            on_state_changed(self.state)
+            print(self.state)
         match self.state:
             case State.SETUP:
                 self.setup()

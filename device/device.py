@@ -1,12 +1,13 @@
 # class that handles the rasberry pi device
 class Device:
-    def __init__(self) -> None:
+    def __init__(self, is_test_mode: bool) -> None:
         self.is_open = False  # whether or not the device is open
         self.should_sound_alarm = False
+        self.is_test_mode = is_test_mode  # whether or not the device is in test mode
 
     # logic that updates the device states
     # returns is_open
-    def update_device_states(self, can_open: bool, on_is_open_changed) -> bool:
+    def update_device_states(self, can_open: bool, on_is_open_changed):
         self.check_for_open(on_is_open_changed)
 
         if self.is_open:
@@ -22,19 +23,19 @@ class Device:
             else:
                 self.lock_device()
 
-        return self.is_open
-
     # output ------------------------------
     # sounds the alarm
     def sound_alarm(self):
         self.should_sound_alarm = True
         while self.should_sound_alarm:
+            self.test_print("Alarm is on")
             # TODO: sound alarm
             pass
 
     # stops the alarm
     def stop_alarm(self):
         self.should_sound_alarm = False
+        self.test_print("Alarm is off")
 
     # unlocks the device
     def unlock_device(self):
@@ -50,6 +51,7 @@ class Device:
 
     # shows a message on the lcd
     def show_message(self, message):
+        self.test_print("Test message: " + message)
         # TODO: show message
         pass
 
@@ -61,10 +63,16 @@ class Device:
         if self.is_open != new_bool:
             self.is_open = new_bool
             self.on_is_open_changed(new_bool)
+            self.test_print("is_open: " + str(new_bool))
         pass
 
     # awaits for user to press key
     def await_input(self, key) -> str:
+        if self.is_test_mode:
+            while self.test_input("Enter a:") != key:
+                pass
+            return
+
         while self.get_input() == key:
             pass
         pass
@@ -72,11 +80,23 @@ class Device:
     # gets a input from the user
     def get_input(self) -> str:
         # TODO: get input from user
-        pass
+        return self.test_input("Enter a: ")
 
     # gets a input from the user
     # and displays message with it
-    def get_input_with_message(self) -> str:
+    def get_input_with_message(self, message) -> str:
         # TODO: show message
         # TODO: get input from user
-        pass
+
+        self.test_input(message)
+
+    # test mode functions
+
+    # prints a message to the console
+    def test_print(self, message):
+        if self.is_test_mode:
+            print(message)
+
+    def test_input(self, message):
+        if self.is_test_mode:
+            return input(message)
