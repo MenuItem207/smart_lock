@@ -7,6 +7,7 @@ import 'package:smart_lock/globals/controllers/size_handler.dart';
 import 'package:smart_lock/globals/controllers/storage.dart';
 import 'package:smart_lock/home/home_screen/home_screen_handler.dart';
 import 'package:smart_lock/home/home_screen/widgets/lock_column.dart';
+import 'package:smart_lock/home/home_screen/widgets/options.dart';
 import 'package:smart_lock/home/home_screen/widgets/security_todo.dart';
 
 /// widget for home
@@ -53,10 +54,10 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                   Expanded(
                     child: Row(
-                      children: [
-                        Expanded(child: const SizedBox()),
+                      children: const [
+                        Options(),
                         LockColumn(),
-                        SecurityTodo()
+                        SecurityTodo(),
                       ],
                     ),
                   )

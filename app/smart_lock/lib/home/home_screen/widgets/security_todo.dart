@@ -12,31 +12,35 @@ class SecurityTodo extends StatelessWidget {
   Widget build(BuildContext context) {
     final HomeScreenHandler handler = Get.find<HomeScreenHandler>();
     return Expanded(
-      child: Padding(
-        padding: const EdgeInsets.only(right: 30),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.end,
-          children: [
-            Text(
-              'Security todo',
-              style: sizeHandler.currentTextTheme.headline2,
-            ),
-            const SizedBox(height: 25),
-            Obx(
-              () => _Entry(
-                  content: handler.todo1.value, showTick: handler.todo1bool),
-            ),
-            const SizedBox(height: 15),
-            _Entry(content: handler.todo2.value, showTick: true),
-            const SizedBox(height: 15),
-            Obx(
-              () => _Entry(
-                  content: handler.todo3.value, showTick: handler.todo3bool),
-            ),
-          ],
-        ),
-      ),
+      child: LayoutBuilder(builder: (context, constraints) {
+        return Padding(
+          padding: EdgeInsets.only(top: constraints.maxHeight / 10, right: 30),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: (sizeHandler.isWide.value)
+                ? CrossAxisAlignment.end
+                : CrossAxisAlignment.start,
+            children: [
+              Text(
+                'Security todo',
+                style: sizeHandler.currentTextTheme.headline2,
+              ),
+              const SizedBox(height: 25),
+              Obx(
+                () => _Entry(
+                    content: handler.todo1.value, showTick: handler.todo1bool),
+              ),
+              const SizedBox(height: 15),
+              _Entry(content: handler.todo2.value, showTick: true),
+              const SizedBox(height: 15),
+              Obx(
+                () => _Entry(
+                    content: handler.todo3.value, showTick: handler.todo3bool),
+              ),
+            ],
+          ),
+        );
+      }),
     );
   }
 }
