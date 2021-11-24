@@ -18,6 +18,8 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
+  // text to display on the login screen to show the user
+  // their verification status i.e press enter to submit, verifying or invalid code
   String loadingText = '(press enter to submit)';
 
   final DatabaseReference db = FirebaseDatabase().reference();
@@ -65,7 +67,6 @@ class _LoginScreenState extends State<LoginScreen> {
                       child: BackdropFilter(
                         filter: ImageFilter.blur(sigmaX: 2, sigmaY: 2),
                         child: TextField(
-                          onChanged: (text) {},
                           onSubmitted: (text) {
                             verifyCode(text);
                           },
@@ -80,7 +81,6 @@ class _LoginScreenState extends State<LoginScreen> {
                             disabledBorder: InputBorder.none,
                             contentPadding: EdgeInsets.only(
                                 bottom: 10, top: 25, right: 30, left: 30),
-                            hintText: "",
                           ),
                           cursorWidth: 3,
                           cursorRadius: const Radius.circular(3),
@@ -110,6 +110,9 @@ class _LoginScreenState extends State<LoginScreen> {
     );
   }
 
+  /// updates the loading text and
+  /// verifies the code entered
+  /// if verified, the user is logged in and the code saved
   Future verifyCode(String code) async {
     loadingText = 'verifying...';
     setState(() {});
