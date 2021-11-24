@@ -5,9 +5,9 @@ import 'package:google_fonts/google_fonts.dart';
 final ThemeData themeData = ThemeData(
   primaryColor: _backgroundColour,
   scaffoldBackgroundColor: _backgroundColour,
-  highlightColor: _blue,
-  focusColor: _gold,
-  errorColor: _red,
+  highlightColor: blue,
+  focusColor: gold,
+  errorColor: red,
   textTheme: TextTheme(
     headline1: GoogleFonts.montserrat(
       fontSize: 55,
@@ -28,7 +28,7 @@ final ThemeData themeData = ThemeData(
 );
 
 const Color _backgroundColour = Color(0xFF2C2F36);
-const Color _blue = Color(0xFF5E83BA);
-const Color _gold = Color(0xFFBA8A5E);
-const Color _red = Color(0xFFEB6D6D);
+const Color blue = Color(0xFF5E83BA);
+const Color gold = Color(0xFFBA8A5E);
+const Color red = Color(0xFFEB6D6D);
 const Color _white = Color(0xFFFFFFFF);
