@@ -2,7 +2,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:smart_lock/globals/config/theme_data.dart';
 
 final SizeHandler sizeHandler = Get.put(SizeHandler());
 
@@ -51,11 +50,6 @@ class SizeHandler {
       color: Colors.white,
     ),
     bodyText1: GoogleFonts.montserrat(
-      fontSize: 25,
-      fontWeight: FontWeight.w200,
-      color: Colors.white,
-    ),
-    bodyText2: GoogleFonts.montserrat(
       fontSize: 25,
       fontWeight: FontWeight.w200,
       color: Colors.white,

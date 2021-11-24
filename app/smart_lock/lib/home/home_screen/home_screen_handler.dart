@@ -42,15 +42,27 @@ class HomeScreenHandler extends GetxController {
         // not allowed to be open
         state.value = LockState.breached;
         hasBreached = true;
+        // update security todos
+        todo1.value = todos1[1];
+        todo3.value = todos3[1];
       } else {
         // allowed to be open
         state.value = LockState.unlocked;
         hasBreached = false;
+        todo1.value = todos1[0]; // update security todos
       }
     } else if (deviceState == DeviceState.disabled) {
       state.value = LockState.disabled;
     } else {
-      state.value = (canOpen.value) ? LockState.unlocked : LockState.locked;
+      if (canOpen.value) {
+        state.value = LockState.unlocked;
+        todo3.value = todos3[1]; // update security todos
+
+      } else {
+        state.value = LockState.locked;
+        todo3.value = todos3[0]; // update security todos
+
+      }
     }
   }
 
@@ -94,6 +106,32 @@ class HomeScreenHandler extends GetxController {
     LockState.breached: 'open security centre',
     LockState.disabled: 'Enable device',
   };
+
+  // security todos
+  RxString todo1 = todos1[0].obs;
+
+  static List<String> todos1 = [
+    'No unresolved breaches',
+    'Resolve breach',
+  ];
+
+  /// returns whether or not to show tick
+  bool get todo1bool {
+    return todos1[0] == todo1.value;
+  }
+
+  RxString todo2 = 'Passwords secure'.obs;
+  RxString todo3 = todos3[0].obs;
+
+  static List<String> todos3 = [
+    'Device locked',
+    'Device unlocked',
+  ];
+
+  /// returns whether or not to show tick
+  bool get todo3bool {
+    return todos3[0] == todo3.value;
+  }
 }
 
 enum DeviceState {
