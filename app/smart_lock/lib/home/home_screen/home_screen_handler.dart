@@ -16,7 +16,7 @@ class HomeScreenHandler extends GetxController {
   /// the current state of the home screen
   Rx<LockState> state = Rx<LockState>(LockState.locked);
 
-  bool canOpen = true;
+  RxBool canOpen = true.obs;
   bool isOpen = true;
   DeviceState deviceState = DeviceState.setup;
   List passwords = [];
@@ -27,7 +27,7 @@ class HomeScreenHandler extends GetxController {
 
   /// syncs the local state with the server
   void updateData(newData) {
-    canOpen = json.decode(newData['can_open']);
+    canOpen.value = json.decode(newData['can_open']);
     isOpen = json.decode(newData['is_open']);
     passwords = json.decode(newData['passwords']);
     deviceState = DeviceState.values[newData['state'] - 1];
@@ -38,7 +38,7 @@ class HomeScreenHandler extends GetxController {
   /// updates the lock state based on the current state of the device
   void updateLockState() {
     if (isOpen == true || hasBreached) {
-      if (!canOpen) {
+      if (!canOpen.value) {
         // not allowed to be open
         state.value = LockState.breached;
         hasBreached = true;
@@ -50,7 +50,7 @@ class HomeScreenHandler extends GetxController {
     } else if (deviceState == DeviceState.disabled) {
       state.value = LockState.disabled;
     } else {
-      state.value = (canOpen) ? LockState.unlocked : LockState.locked;
+      state.value = (canOpen.value) ? LockState.unlocked : LockState.locked;
     }
   }
 
