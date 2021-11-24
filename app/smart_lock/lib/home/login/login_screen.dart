@@ -32,9 +32,15 @@ class _LoginScreenState extends State<LoginScreen> {
               padding: const EdgeInsets.only(bottom: 150, top: 50),
               child: Opacity(
                 opacity: 0.15,
-                child: Lock(
-                  lockPosition: 0,
-                  otherColor: Theme.of(context).highlightColor,
+                child: Material(
+                  color: Colors.transparent,
+                  child: Hero(
+                    tag: 'lock',
+                    child: Lock(
+                      lockPosition: 0,
+                      otherColor: Theme.of(context).highlightColor,
+                    ),
+                  ),
                 ),
               ),
             ),

@@ -33,56 +33,73 @@ class _HomeScreenState extends State<HomeScreen> {
               var data = snapshot.data!.snapshot.value;
               handler.updateData(data);
             }
-            return Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Padding(
-                  padding: const EdgeInsets.only(top: 30, left: 30),
-                  child: Text(
-                    "Good Afternoon",
-                    style: sizeHandler.currentTextTheme.headline1,
+            return Obx(
+              () => Column(
+                // used to listen to handler.state.value
+                mainAxisAlignment: (handler.state.value == LockState.locked)
+                    ? MainAxisAlignment.center
+                    : MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.only(top: 30, left: 30),
+                    child: Text(
+                      "Good Afternoon",
+                      style: sizeHandler.currentTextTheme.headline1,
+                    ),
                   ),
-                ),
-                Expanded(
-                  child: Row(
-                    children: [
-                      Expanded(child: const SizedBox()),
-                      Expanded(
-                          child: Stack(
-                        alignment: Alignment.center,
-                        children: [
-                          Padding(
-                            padding:
-                                const EdgeInsets.only(top: 30, bottom: 200),
-                            child: Lock(
-                                lockPosition: 0,
-                                otherColor: Theme.of(context).highlightColor),
-                          ),
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            mainAxisAlignment: MainAxisAlignment.end,
-                            children: [
-                              Text(
-                                handler.deviceStatement,
-                                textAlign: TextAlign.center,
-                                style: sizeHandler.currentTextTheme.headline3,
+                  Expanded(
+                    child: Row(
+                      children: [
+                        Expanded(child: const SizedBox()),
+                        Expanded(
+                            child: Stack(
+                          alignment: Alignment.center,
+                          children: [
+                            Padding(
+                              padding:
+                                  const EdgeInsets.only(top: 30, bottom: 200),
+                              child: Material(
+                                color: Colors.transparent,
+                                child: Hero(
+                                  tag: 'lock',
+                                  child: Lock(
+                                      lockPosition: 0,
+                                      otherColor:
+                                          Theme.of(context).highlightColor),
+                                ),
                               ),
-                              const SizedBox(height: 15),
-                              Text(
-                                handler.quickActionText,
-                                textAlign: TextAlign.center,
-                                style: sizeHandler.currentTextTheme.headline5,
-                              ),
-                              const SizedBox(height: 80)
-                            ],
-                          ),
-                        ],
-                      )),
-                      Expanded(child: const SizedBox()),
-                    ],
-                  ),
-                )
-              ],
+                            ),
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              mainAxisAlignment: MainAxisAlignment.end,
+                              children: [
+                                Text(
+                                  handler.deviceStatement,
+                                  textAlign: TextAlign.center,
+                                  style: sizeHandler.currentTextTheme.headline3,
+                                ),
+                                const SizedBox(height: 15),
+                                GestureDetector(
+                                  onTap: () => handler.quickAction(),
+                                  child: Text(
+                                    handler.quickActionText,
+                                    textAlign: TextAlign.center,
+                                    style:
+                                        sizeHandler.currentTextTheme.headline5,
+                                  ),
+                                ),
+                                const SizedBox(height: 80)
+                              ],
+                            ),
+                          ],
+                        )),
+                        Expanded(child: const SizedBox()),
+                      ],
+                    ),
+                  )
+                ],
+              ),
             );
           }),
     );
