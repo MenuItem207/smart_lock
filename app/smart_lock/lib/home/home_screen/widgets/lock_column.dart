@@ -47,13 +47,14 @@ class LockColumn extends StatelessWidget {
                 () => CustomAnimation<TimelineValue<_AniProps>>(
                     duration: const Duration(milliseconds: 150),
                     tween: _tween,
-                    control: (handler.canOpen.value || handler.hasBreached)
-                        ? CustomAnimationControl.play
-                        : CustomAnimationControl.playReverse,
+                    control:
+                        (handler.canOpen.value || handler.hasBreached.value)
+                            ? CustomAnimationControl.play
+                            : CustomAnimationControl.playReverse,
                     builder: (context, child, value) {
                       return Lock(
                         lockPosition: value.get(_AniProps.pos),
-                        otherColor: value.get((handler.hasBreached)
+                        otherColor: value.get((handler.hasBreached.value)
                             ? _AniProps.colorBreached
                             : _AniProps.colorNormal),
                       );

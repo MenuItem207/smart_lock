@@ -54,7 +54,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                   Expanded(
                     child: Row(
-                      children: const [
+                      children: [
                         Options(),
                         LockColumn(),
                         SecurityTodo(),

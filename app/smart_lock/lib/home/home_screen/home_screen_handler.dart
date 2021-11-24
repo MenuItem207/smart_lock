@@ -22,8 +22,8 @@ class HomeScreenHandler extends GetxController {
   List passwords = [];
   List images = [];
 
-  bool hasBreached =
-      false; // set to true if breached before, only false if user sets canOpen to true
+  RxBool hasBreached = false
+      .obs; // set to true if breached before, only false if user sets canOpen to true
 
   /// syncs the local state with the server
   void updateData(newData) {
@@ -37,18 +37,18 @@ class HomeScreenHandler extends GetxController {
 
   /// updates the lock state based on the current state of the device
   void updateLockState() {
-    if (isOpen == true || hasBreached) {
+    if (isOpen == true || hasBreached.value) {
       if (!canOpen.value) {
         // not allowed to be open
         state.value = LockState.breached;
-        hasBreached = true;
+        hasBreached.value = true;
         // update security todos
         todo1.value = todos1[1];
         todo3.value = todos3[1];
       } else {
         // allowed to be open
         state.value = LockState.unlocked;
-        hasBreached = false;
+        hasBreached.value = false;
         todo1.value = todos1[0]; // update security todos
       }
     } else if (deviceState == DeviceState.disabled) {

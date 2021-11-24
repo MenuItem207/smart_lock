@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
+import 'package:simple_animations/simple_animations.dart';
 
 import 'package:smart_lock/globals/config/theme_data.dart';
 import 'package:smart_lock/globals/controllers/size_handler.dart';
@@ -28,7 +29,19 @@ class Options extends StatelessWidget {
               const SizedBox(height: 25),
               _Entry(title: 'Passwords\nmanager', onTap: () {}),
               const SizedBox(height: 15),
-              _Entry(title: 'Security\ncentre', onTap: () {}),
+              CustomAnimation(
+                  tween: ColorTween(begin: red, end: blue),
+                  duration: const Duration(milliseconds: 250),
+                  control: (handler.hasBreached.value)
+                      ? CustomAnimationControl.playReverse
+                      : CustomAnimationControl.play,
+                  builder: (context, child, value) {
+                    return _Entry(
+                      title: 'Security\ncentre',
+                      onTap: () {},
+                      secondColour: value as Color,
+                    );
+                  }),
             ],
           ),
         );
