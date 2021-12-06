@@ -19,6 +19,8 @@ dependencies:
   
   google_fonts: ^2.1.0
   simple_animations: ^4.0.1
+  card_swiper: ^1.0.4
+
 
 
 

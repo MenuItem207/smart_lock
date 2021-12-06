@@ -22,7 +22,7 @@ class App extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
-        title: 'Wave',
+        title: 'Smart Lock',
         builder: (context, child) {
           return ScrollConfiguration(
             behavior: ScrollBehaviour(),

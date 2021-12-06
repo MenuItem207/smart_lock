@@ -47,7 +47,7 @@ class HomeScreenHandler extends GetxController {
   bool isOpen = true;
   DeviceState deviceState = DeviceState.setup;
   List passwords = [];
-  List images = [];
+  RxList images = [].obs;
 
   RxBool hasBreached = false
       .obs; // set to true if breached before, only false if user sets canOpen to true
@@ -58,7 +58,7 @@ class HomeScreenHandler extends GetxController {
     isOpen = json.decode(newData['is_open']);
     passwords = json.decode(newData['passwords']);
     deviceState = DeviceState.values[newData['state'] - 1];
-    images = json.decode(newData['images']);
+    images.value = json.decode(newData['images']);
     updateLockState();
   }
 
@@ -109,6 +109,12 @@ class HomeScreenHandler extends GetxController {
         database.update({'state': 2});
         break;
     }
+  }
+
+  /// resolves the breach by setting can_open to true
+  void resolveBreach() {
+    database.update({'can_open': "true"});
+    print('updated');
   }
 
   String get deviceStatement {
