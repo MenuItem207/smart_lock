@@ -24,6 +24,12 @@ final ThemeData themeData = ThemeData(
       fontWeight: FontWeight.w200,
       color: white,
     ),
+    // headline for overlay screen title
+    headline3: GoogleFonts.montserrat(
+      fontSize: 55,
+      fontWeight: FontWeight.w200,
+      color: white,
+    ),
   ),
 );
 

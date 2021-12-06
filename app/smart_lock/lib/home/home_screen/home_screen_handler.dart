@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:firebase_database/firebase_database.dart';
 
 import 'package:smart_lock/globals/controllers/storage.dart';
+import 'package:smart_lock/home/home_screen/widgets/overlay/overlay_screen.dart';
 
 /// handles the states of the home screen
 class HomeScreenHandler extends GetxController {
@@ -12,6 +13,32 @@ class HomeScreenHandler extends GetxController {
       .reference()
       .child("devices")
       .child(storage.id.value!);
+
+  /// overlay states ----------------------------------------------------------
+
+  /// current state of the home screen overlay
+  Rx<OverlayScreenType> overlayType =
+      Rx<OverlayScreenType>(OverlayScreenType.none);
+
+  /// sets the overlay type to none
+  void hideOverlay() {
+    overlayType.value = OverlayScreenType.none;
+    update();
+  }
+
+  /// shows the passwords overlay screen
+  void showPasswords() {
+    overlayType.value = OverlayScreenType.passwords;
+    update();
+  }
+
+  /// shows the security overlay screen
+  void showSecurity() {
+    overlayType.value = OverlayScreenType.security;
+    update();
+  }
+
+  /// home screen states ------------------------------------------------------
 
   /// the current state of the home screen
   Rx<LockState> state = Rx<LockState>(LockState.locked);

@@ -8,6 +8,7 @@ import 'package:smart_lock/globals/controllers/storage.dart';
 import 'package:smart_lock/home/home_screen/home_screen_handler.dart';
 import 'package:smart_lock/home/home_screen/widgets/lock_column.dart';
 import 'package:smart_lock/home/home_screen/widgets/options.dart';
+import 'package:smart_lock/home/home_screen/widgets/overlay/overlay_screen.dart';
 import 'package:smart_lock/home/home_screen/widgets/security_todo.dart';
 
 /// widget for home
@@ -38,29 +39,34 @@ class _HomeScreenState extends State<HomeScreen> {
               handler.updateData(data);
             }
             return Obx(
-              () => Column(
-                // used to listen to handler.state.value
-                mainAxisAlignment: (handler.state.value == LockState.locked)
-                    ? MainAxisAlignment.center
-                    : MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.start,
+              () => Stack(
                 children: [
-                  Padding(
-                    padding: const EdgeInsets.only(top: 30, left: 30),
-                    child: Text(
-                      "Good Afternoon",
-                      style: sizeHandler.currentTextTheme.headline1,
-                    ),
+                  Column(
+                    // used to listen to handler.state.value
+                    mainAxisAlignment: (handler.state.value == LockState.locked)
+                        ? MainAxisAlignment.center
+                        : MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.only(top: 30, left: 30),
+                        child: Text(
+                          "Good Afternoon",
+                          style: sizeHandler.currentTextTheme.headline1,
+                        ),
+                      ),
+                      Expanded(
+                        child: Row(
+                          children: [
+                            Options(),
+                            LockColumn(),
+                            SecurityTodo(),
+                          ],
+                        ),
+                      )
+                    ],
                   ),
-                  Expanded(
-                    child: Row(
-                      children: [
-                        Options(),
-                        LockColumn(),
-                        SecurityTodo(),
-                      ],
-                    ),
-                  )
+                  const OverlayScreen(),
                 ],
               ),
             );

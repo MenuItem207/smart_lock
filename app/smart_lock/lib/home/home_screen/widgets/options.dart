@@ -27,7 +27,9 @@ class Options extends StatelessWidget {
                 style: sizeHandler.currentTextTheme.headline2,
               ),
               const SizedBox(height: 25),
-              _Entry(title: 'Passwords\nmanager', onTap: () {}),
+              _Entry(
+                  title: 'Passwords\nmanager',
+                  onTap: () => handler.showPasswords()),
               const SizedBox(height: 15),
               CustomAnimation(
                   tween: ColorTween(begin: red, end: blue),
@@ -38,7 +40,7 @@ class Options extends StatelessWidget {
                   builder: (context, child, value) {
                     return _Entry(
                       title: 'Security\ncentre',
-                      onTap: () {},
+                      onTap: () => handler.showSecurity(),
                       secondColour: value as Color,
                     );
                   }),
