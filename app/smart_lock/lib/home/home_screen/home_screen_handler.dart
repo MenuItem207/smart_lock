@@ -1,3 +1,5 @@
+// ignore_for_file: invalid_use_of_protected_member
+
 import 'dart:convert';
 
 import 'package:flutter/foundation.dart';
@@ -104,7 +106,7 @@ class HomeScreenHandler extends GetxController {
         database.update({'can_open': "false"});
         break;
       case LockState.breached:
-        // TODO: implement
+        showSecurity();
         break;
       case LockState.disabled:
         database.update({'state': 2});

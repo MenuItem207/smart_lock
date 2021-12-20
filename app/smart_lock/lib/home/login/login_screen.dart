@@ -122,7 +122,7 @@ class _LoginScreenState extends State<LoginScreen> {
         isValid = result.value.containsKey(code);
       });
     } catch (e) {
-      print(e);
+      debugPrint(e.toString());
     }
 
     if (isValid) {
