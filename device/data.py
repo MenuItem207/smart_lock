@@ -59,7 +59,7 @@ class Data:
         self.device.show_message("Set password in app")
         # update backend
         print('creating user: %s', self.uuid)
-        self.db.child("devices").child(_uuid).update({"passwords": "[]", "can_open": "false", "state": self.state.value, "is_open": "false"})
+        self.db.child("devices").child(_uuid).update({"passwords": "[\"1234\"]", "can_open": "false", "state": self.state.value, "is_open": "false"})
         print('created')
         self.update_state(State.IDLE)
         # init stream

@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -49,9 +48,19 @@ class SizeHandler {
       fontWeight: FontWeight.w500,
       color: Colors.white,
     ),
+    headline6: GoogleFonts.montserrat(
+      fontSize: 55,
+      fontWeight: FontWeight.w200,
+      color: Colors.white.withOpacity(0.4),
+    ),
     bodyText1: GoogleFonts.montserrat(
       fontSize: 25,
       fontWeight: FontWeight.w200,
+      color: Colors.white,
+    ),
+    bodyText2: GoogleFonts.montserrat(
+      fontSize: 16,
+      fontWeight: FontWeight.w500,
       color: Colors.white,
     ),
   );

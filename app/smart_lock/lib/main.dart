@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import 'package:get/get_navigation/get_navigation.dart';
-
 import 'package:smart_lock/globals/config/theme_data.dart';
 import 'package:smart_lock/globals/config/scroll_behaviour.dart';
 import 'package:smart_lock/globals/controllers/size_handler.dart';

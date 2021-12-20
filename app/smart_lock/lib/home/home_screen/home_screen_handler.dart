@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';
 import 'package:firebase_database/firebase_database.dart';
 
@@ -46,7 +47,7 @@ class HomeScreenHandler extends GetxController {
   RxBool canOpen = true.obs;
   bool isOpen = true;
   DeviceState deviceState = DeviceState.setup;
-  List passwords = [];
+  RxList passwords = [].obs;
   RxList images = [].obs;
 
   RxBool hasBreached = false
@@ -56,7 +57,7 @@ class HomeScreenHandler extends GetxController {
   void updateData(newData) {
     canOpen.value = json.decode(newData['can_open']);
     isOpen = json.decode(newData['is_open']);
-    passwords = json.decode(newData['passwords']);
+    passwords.value = json.decode(newData['passwords']);
     deviceState = DeviceState.values[newData['state'] - 1];
     images.value = json.decode(newData['images']);
     updateLockState();
@@ -114,7 +115,25 @@ class HomeScreenHandler extends GetxController {
   /// resolves the breach by setting can_open to true
   void resolveBreach() {
     database.update({'can_open': "true"});
-    print('updated');
+    debugPrint('updated');
+  }
+
+  /// modify default password
+  void modifyDefaultPassword(String newPassword) {
+    database
+        .update({'passwords': json.encode(passwords.value..[0] = newPassword)});
+  }
+
+  /// adds a temporary password
+  void addTemporaryPassword(String newPassword) {
+    database
+        .update({'passwords': json.encode(passwords.value..add(newPassword))});
+  }
+
+  /// deletes a password
+  void deletePassword(int index) {
+    database
+        .update({'passwords': json.encode(passwords.value..removeAt(index))});
   }
 
   String get deviceStatement {
