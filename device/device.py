@@ -6,7 +6,6 @@ import base64
 class Device:
     def __init__(self, is_test_mode: bool) -> None:
         self.is_open = False  # whether or not the device is open
-        # self.should_sound_alarm = False
         self.is_test_mode = is_test_mode  # whether or not the device is in test mode
         self.has_taken_image = False  # whether or not the device has taken an image
 
@@ -29,7 +28,7 @@ class Device:
         if self.is_open:
             if can_open:
                 self.stop_alarm()
-                pass
+                self.has_taken_image = False
             else:
                 # breach
                 self.sound_alarm()
@@ -45,20 +44,18 @@ class Device:
             if can_open:
                 self.unlock_device()
                 self.stop_alarm()
+                self.has_taken_image = False
             else:
                 self.lock_device()
 
     # output ------------------------------
     # sounds the alarm
     def sound_alarm(self):
-        # self.should_sound_alarm = True
-        # while self.should_sound_alarm:
         GPIO.output(18, 1)
         self.test_print("Alarm is on")
 
     # stops the alarm
     def stop_alarm(self):
-        # self.should_sound_alarm = False
         GPIO.output(18, 0)
         self.test_print("Alarm is off")
 
@@ -74,7 +71,6 @@ class Device:
     def show_message(self, message):
         self.test_print("Test message: " + message)
         # TODO: show message
-        pass
 
     # input ------------------------------
     def check_for_open(self, on_is_open_changed):
@@ -91,7 +87,6 @@ class Device:
             self.is_open = new_bool
             on_is_open_changed(new_bool)
             self.test_print("is_open: " + str(new_bool))
-        pass
 
     # awaits for user to press key
     def await_input(self, key) -> str:
@@ -102,7 +97,6 @@ class Device:
 
         while self.get_input() == key:
             pass
-        pass
 
     # gets a input from the user
     def get_input(self) -> str:

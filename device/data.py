@@ -43,8 +43,6 @@ class Data:
         # get the data from the database
         data = list(self.db.child("devices").child(self.uuid).get().val().items())
         self.can_open = json.loads(data[0][1])
-        if self.can_open:  # if breach resolved, reset camera
-            self.device.reset_cam()
         self.passwords = data[3][1]
         self.state = State(data[4][1])
 
@@ -107,7 +105,9 @@ class Data:
             self.setup()
         elif self.state == State.IDLE:
             self.device.update_device_states(
-                self.can_open, self.on_is_open_change, self.update_images
+                self.can_open,
+                self.on_is_open_change,
+                self.update_images,
             )
         elif self.state == State.PASSWORD:
             pass
