@@ -66,6 +66,7 @@ class Data:
             {
                 "passwords": '["1234"]',
                 "can_open": "false",
+                "images": "[]",
                 "state": self.state.value,
                 "is_open": "false",
             }
