@@ -58,7 +58,7 @@ class HomeScreenHandler extends GetxController {
   /// syncs the local state with the server
   void updateData(newData) {
     canOpen.value = json.decode(newData['can_open']);
-    isOpen = json.decode(newData['is_open']);
+    isOpen = json.decode(newData['is_open']) == 1;
     passwords.value = json.decode(newData['passwords']);
     deviceState = DeviceState.values[newData['state'] - 1];
     images.value = json.decode(newData['images']);

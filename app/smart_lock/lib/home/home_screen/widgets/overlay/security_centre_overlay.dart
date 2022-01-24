@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
@@ -27,16 +28,16 @@ class SecurityCentreOverlayState extends State<SecurityCentreOverlay> {
               height: 350,
               child: Swiper(
                 itemBuilder: (BuildContext context, int index) {
-                  return Card(
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(25)),
-                    child: Image.network(
-                      "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b6/Image_created_with_a_mobile_phone.png/1200px-Image_created_with_a_mobile_phone.png",
-                      fit: BoxFit.contain,
-                    ),
-                  );
+                  return (handler.images.isEmpty)
+                      ? const SizedBox()
+                      : Card(
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(25)),
+                          child:
+                              Image.memory(base64Decode(handler.images[index])),
+                        );
                 },
-                itemCount: 10,
+                itemCount: handler.images.length,
                 viewportFraction: 0.8,
                 scale: 0.9,
                 layout: SwiperLayout.STACK,
