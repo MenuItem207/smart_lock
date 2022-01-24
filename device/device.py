@@ -16,7 +16,7 @@ class Device:
         GPIO.setup(18, GPIO.OUT)  # buzzer
         GPIO.setup(24, GPIO.OUT)  # LED
         GPIO.setup(22, GPIO.IN)  # switch
-        
+
     # resets camera
     def reset_cam(self):
         self.has_taken_image = False
@@ -33,7 +33,7 @@ class Device:
             else:
                 # breach
                 self.sound_alarm()
-                if self.has_taken_image:
+                if not self.has_taken_image:
                     subprocess.run(["fswebcam", "pic.jpg"])
                     with open("pic.jpg", "rb") as image:
                         b64string = base64.b64encode(image.read()).decode("utf-8")
@@ -51,7 +51,7 @@ class Device:
     # output ------------------------------
     # sounds the alarm
     def sound_alarm(self):
-        self.should_sound_alarm = True
+        # self.should_sound_alarm = True
         # while self.should_sound_alarm:
         GPIO.output(18, 1)
         self.test_print("Alarm is on")

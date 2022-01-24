@@ -92,7 +92,7 @@ class Data:
     # updates backend with new image
     def update_images(self, img):
         print("updating images")
-        self.images.pop(img)
+        self.images.append(img)
         self.db.child("devices").child(self.uuid).update(
             {"images": json.dumps(self.images)}
         )
