@@ -1,6 +1,7 @@
 import json
 import pyrebase
 import uuid
+import time
 
 from test import Test
 from test_mode import TestMode
@@ -22,6 +23,7 @@ class Data:
         self.passwords = (
             []
         )  # the list of passwords that work, the first index is the default password
+        self.images = []  # list of {timestamp, images}
         print("uuid: %s" % (self.uuid))
 
         # backend
@@ -82,6 +84,14 @@ class Data:
         self.db.child("devices").child(self.uuid).update(
             {"is_open": json.dumps(new_bool)}
         )
+
+    # updates backend with new image
+    def update_images(self, img):
+        print("updating images")
+        self.images.pop({"time": time.time() * 1000, "img": img})
+        self.db.child("devices").child(self.uuid).update(
+            {"images": json.dumps(self.images)}
+    )
 
     # runs the logic
     def run(self, old_state, on_state_changed):

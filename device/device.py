@@ -17,7 +17,7 @@ class Device:
 
     # logic that updates the device states
     # returns is_open
-    def update_device_states(self, can_open: bool, on_is_open_changed):
+    def update_device_states(self, can_open: bool, on_is_open_changed, update_images):
         self.check_for_open(on_is_open_changed)
 
         if self.is_open:
@@ -29,6 +29,7 @@ class Device:
                 self.sound_alarm()
                 subprocess.run(["fswebcam", "pic.jpg"])
                 data = open("pic.jpg", "rb").read()
+                update_images(data)
 
         else:
             # device is closed
