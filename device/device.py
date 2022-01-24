@@ -16,10 +16,6 @@ class Device:
         GPIO.setup(24, GPIO.OUT)  # LED
         GPIO.setup(22, GPIO.IN)  # switch
 
-    # resets camera
-    def reset_cam(self):
-        self.has_taken_image = False
-
     # logic that updates the device states
     # returns is_open
     def update_device_states(self, can_open: bool, on_is_open_changed, update_images):
