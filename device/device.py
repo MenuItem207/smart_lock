@@ -1,4 +1,5 @@
 import RPi.GPIO as GPIO
+import subprocess
 
 # class that handles the rasberry pi device
 class Device:
@@ -19,17 +20,22 @@ class Device:
     def update_device_states(self, can_open: bool, on_is_open_changed):
         self.check_for_open(on_is_open_changed)
 
-        print(can_open)
         if self.is_open:
             if can_open:
                 self.stop_alarm()
                 pass
             else:
+                # breach
                 self.sound_alarm()
+                subprocess.run(["fswebcam", "static/pic.jpg"])
+                data = open("static/pic.jpg", "rb").read()
+                print(data)
+
         else:
             # device is closed
             if can_open:
                 self.unlock_device()
+                self.stop_alarm()
             else:
                 self.lock_device()
 
