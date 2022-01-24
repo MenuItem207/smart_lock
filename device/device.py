@@ -1,5 +1,6 @@
 import RPi.GPIO as GPIO
 import subprocess
+import base64
 
 # class that handles the rasberry pi device
 class Device:
@@ -7,6 +8,7 @@ class Device:
         self.is_open = False  # whether or not the device is open
         # self.should_sound_alarm = False
         self.is_test_mode = is_test_mode  # whether or not the device is in test mode
+        self.has_taken_image = False  # whether or not the device has taken an image
 
         # initialise pi
         GPIO.setmode(GPIO.BCM)
@@ -14,6 +16,10 @@ class Device:
         GPIO.setup(18, GPIO.OUT)  # buzzer
         GPIO.setup(24, GPIO.OUT)  # LED
         GPIO.setup(22, GPIO.IN)  # switch
+        
+    # resets camera
+    def reset_cam(self):
+        self.has_taken_image = False
 
     # logic that updates the device states
     # returns is_open
@@ -27,9 +33,12 @@ class Device:
             else:
                 # breach
                 self.sound_alarm()
-                subprocess.run(["fswebcam", "pic.jpg"])
-                data = open("pic.jpg", "rb").read()
-                update_images(data)
+                if self.has_taken_image:
+                    subprocess.run(["fswebcam", "pic.jpg"])
+                    with open("pic.jpg", "rb") as image:
+                        b64string = base64.b64encode(image.read()).decode("utf-8")
+                        update_images(b64string)
+                        self.has_taken_image = True
 
         else:
             # device is closed

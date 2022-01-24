@@ -2,6 +2,7 @@ import json
 import pyrebase
 import uuid
 import time
+import base64
 
 from test import Test
 from test_mode import TestMode
@@ -10,6 +11,7 @@ from states import State
 from device import Device
 
 from credentials.firebase_config import config
+
 
 # handles the different states of the logic
 class Data:
@@ -41,6 +43,8 @@ class Data:
         # get the data from the database
         data = list(self.db.child("devices").child(self.uuid).get().val().items())
         self.can_open = json.loads(data[0][1])
+        if self.can_open:  # if breach resolved, reset camera
+            self.device.reset_cam()
         self.passwords = data[3][1]
         self.state = State(data[4][1])
 
@@ -88,10 +92,10 @@ class Data:
     # updates backend with new image
     def update_images(self, img):
         print("updating images")
-        self.images.pop({"time": time.time() * 1000, "img": img})
+        self.images.pop(img)
         self.db.child("devices").child(self.uuid).update(
             {"images": json.dumps(self.images)}
-    )
+        )
 
     # runs the logic
     def run(self, old_state, on_state_changed):
@@ -102,7 +106,9 @@ class Data:
         if self.state == State.SETUP:
             self.setup()
         elif self.state == State.IDLE:
-            self.device.update_device_states(self.can_open, self.on_is_open_change)
+            self.device.update_device_states(
+                self.can_open, self.on_is_open_change, self.update_images
+            )
         elif self.state == State.PASSWORD:
             pass
         elif self.state == State.DISABLED:
