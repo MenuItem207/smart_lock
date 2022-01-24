@@ -27,9 +27,8 @@ class Device:
             else:
                 # breach
                 self.sound_alarm()
-                subprocess.run(["fswebcam", "static/pic.jpg"])
-                data = open("static/pic.jpg", "rb").read()
-                print(data)
+                subprocess.run(["fswebcam", "pic.jpg"])
+                data = open("pic.jpg", "rb").read()
 
         else:
             # device is closed
