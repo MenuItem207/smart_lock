@@ -1,9 +1,18 @@
+import RPi.GPIO as GPIO
+
 # class that handles the rasberry pi device
 class Device:
     def __init__(self, is_test_mode: bool) -> None:
         self.is_open = False  # whether or not the device is open
-        self.should_sound_alarm = False
+        # self.should_sound_alarm = False
         self.is_test_mode = is_test_mode  # whether or not the device is in test mode
+
+        # initialise pi
+        GPIO.setmode(GPIO.BCM)
+        GPIO.setwarnings(False)
+        GPIO.setup(18, GPIO.OUT)  # buzzer
+        GPIO.setup(24, GPIO.OUT)  # LED
+        GPIO.setup(22, GPIO.IN)  # switch
 
     # logic that updates the device states
     # returns is_open
@@ -28,27 +37,23 @@ class Device:
     # sounds the alarm
     def sound_alarm(self):
         self.should_sound_alarm = True
-        while self.should_sound_alarm:
-            self.test_print("Alarm is on")
-            # TODO: sound alarm
-            pass
+        # while self.should_sound_alarm:
+        GPIO.output(18, 1)
+        self.test_print("Alarm is on")
 
     # stops the alarm
     def stop_alarm(self):
-        self.should_sound_alarm = False
+        # self.should_sound_alarm = False
+        GPIO.output(18, 0)
         self.test_print("Alarm is off")
 
     # unlocks the device
     def unlock_device(self):
-        # should include logic to check if already unlocked
-        # TODO: add logic to unlock the device
-        pass
+        GPIO.output(24, 1)  # turn on LED if unlocked
 
     # locks the device
     def lock_device(self):
-        # should include logic to check if already locked
-        # TODO: add logic to lock the device
-        pass
+        GPIO.output(24, 0)  # turn off LED if locked
 
     # shows a message on the lcd
     def show_message(self, message):
@@ -58,8 +63,7 @@ class Device:
 
     # input ------------------------------
     def check_for_open(self, on_is_open_changed):
-        # TODO: add logic to check if the device is open
-        new_bool = False
+        new_bool = GPIO.input(22)  # if switch is high, device is open
 
         if self.is_test_mode:
             result = self.test_input("Enter 1 to set as open, 0 to set as closed")
