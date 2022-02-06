@@ -2,6 +2,8 @@ import RPi.GPIO as GPIO
 import subprocess
 import base64
 
+from states import State
+
 # class that handles the rasberry pi device
 class Device:
     def __init__(self, is_test_mode: bool) -> None:
@@ -18,7 +20,13 @@ class Device:
 
     # logic that updates the device states
     # returns is_open
-    def update_device_states(self, can_open: bool, on_is_open_changed, update_images):
+    def update_device_states(
+        self,
+        can_open: bool,
+        on_is_open_changed,
+        update_images,
+        change_state,
+    ):
         self.check_for_open(on_is_open_changed)
 
         if self.is_open:
@@ -43,6 +51,11 @@ class Device:
                 self.has_taken_image = False
             else:
                 self.lock_device()
+                # TODO: check if potentiometer has reached threshold
+                # change the state to PASSWORD
+                if False:
+                    self.has_reached_threshold = True
+                    change_state(State.PASSWORD)
 
     # output ------------------------------
     # sounds the alarm

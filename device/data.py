@@ -87,6 +87,19 @@ class Data:
             {"is_open": json.dumps(new_bool)}
         )
 
+    # called when the device is in PASSWORD state and the user enters a correct password
+    def on_password_correct(self):
+        self.db.child("devices").child(self.uuid).update(
+            {
+                "can_open": json.dumps(True),
+                "passwords": json.dumps(self.passwords),
+            }
+        )
+
+    # called when the device state is change
+    def change_state(self, state):
+        self.db.child("devices").child(self.uuid).update({"state": state})
+
     # updates backend with new image
     def update_images(self, img):
         print("updating images")
@@ -108,8 +121,16 @@ class Data:
                 self.can_open,
                 self.on_is_open_change,
                 self.update_images,
+                self.change_state,
             )
         elif self.state == State.PASSWORD:
-            pass
+            attempt = self.device.get_input()
+            if attempt in self.passwords:
+                # check if attempt is a temporary password (passwords that have index > 0)
+                if self.passwords[0] != attempt:
+                    self.passwords.remove(attempt)
+                self.on_password_correct()
+            self.change_state(State.IDLE)
+
         elif self.state == State.DISABLED:
             pass
