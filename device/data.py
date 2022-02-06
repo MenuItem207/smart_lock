@@ -124,6 +124,8 @@ class Data:
                 self.change_state,
             )
         elif self.state == State.PASSWORD:
+            # gets a 4 digit input and goes back to IDLE after
+            # if 4 digit input is correct, update backend
             attempt = self.device.get_input()
             if attempt in self.passwords:
                 # check if attempt is a temporary password (passwords that have index > 0)

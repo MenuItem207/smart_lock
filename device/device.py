@@ -13,7 +13,7 @@ class Device:
         self.is_open = False  # whether or not the device is open
         self.is_test_mode = is_test_mode  # whether or not the device is in test mode
         self.has_taken_image = False  # whether or not the device has taken an image
-        self.display = I2C_LCD_driver.lcd() # lcd display on the raspberry pi
+        self.display = I2C_LCD_driver.lcd()  # lcd display on the raspberry pi
 
         # initialise pi
         GPIO.setmode(GPIO.BCM)
@@ -23,7 +23,6 @@ class Device:
         GPIO.setup(22, GPIO.IN)  # switch
 
     # logic that updates the device states
-    # returns is_open
     def update_device_states(
         self,
         can_open: bool,
@@ -58,7 +57,6 @@ class Device:
                 # TODO: check if potentiometer has reached threshold
                 # change the state to PASSWORD
                 if False:
-                    self.has_reached_threshold = True
                     change_state(State.PASSWORD)
 
     # output ------------------------------
