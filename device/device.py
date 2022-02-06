@@ -1,6 +1,9 @@
 import RPi.GPIO as GPIO
 import subprocess
 import base64
+from time import sleep
+from time import *
+import I2C_LCD_driver
 
 from states import State
 
@@ -10,6 +13,7 @@ class Device:
         self.is_open = False  # whether or not the device is open
         self.is_test_mode = is_test_mode  # whether or not the device is in test mode
         self.has_taken_image = False  # whether or not the device has taken an image
+        self.display = I2C_LCD_driver.lcd() # lcd display on the raspberry pi
 
         # initialise pi
         GPIO.setmode(GPIO.BCM)
