@@ -81,7 +81,7 @@ class Device:
     # shows a message on the lcd
     def show_message(self, message):
         self.test_print("Test message: " + message)
-        # TODO: show message
+        self.display.lcd_display_string(message)
 
     # input ------------------------------
     def check_for_open(self, on_is_open_changed):
@@ -111,8 +111,51 @@ class Device:
 
     # gets a input from the user
     def get_input(self) -> str:
-        # TODO: get input from user
-        return self.test_input("Enter a: ")
+        MATRIX = [
+            [1, 2, 3],
+            [4, 5, 6],
+            [7, 8, 9],
+            ["*", 0, "#"],
+        ]  # layout of keys on keypad
+        ROW = [6, 20, 19, 13]  # row pins
+        COL = [12, 5, 16]  # column pins
+
+        # set column pins as outputs, and write default value of 1 to each
+        for i in range(3):
+            GPIO.setup(COL[i], GPIO.OUT)
+            GPIO.output(COL[i], 1)
+
+        # set row pins as inputs, with pull up
+        for j in range(4):
+            GPIO.setup(ROW[j], GPIO.IN, pull_up_down=GPIO.PUD_UP)
+
+        fourdigits = []
+
+        self.display.lcd_display_string("Password?")
+
+        # scan keypad
+        while True:
+            for i in range(3):  # loop thru’ all columns
+                GPIO.output(COL[i], 0)  # pull one column pin low
+                for j in range(4):  # check which row pin becomes low
+                    if GPIO.input(ROW[j]) == 0:  # if a key is pressed
+                        self.display.lcd_display_string("                        ")
+                        if MATRIX[j][i] == "#":
+                            fourdigits = []
+                            input = ""
+                            self.display.lcd_display_string("                        ")
+                        else:
+                            # print (MATRIX[j][i]) #print the key pressed
+                            fourdigits.append(str(MATRIX[j][i]))
+                        input = " ".join(fourdigits)
+                        print(input)
+                        self.display.lcd_display_string(input)
+                        if len(fourdigits) > 3:
+                            return input
+
+                        while GPIO.input(ROW[j]) == 0:  # debounce
+                            sleep(0.1)
+                GPIO.output(COL[i], 1)  # write back default value of 1
 
     # gets a input from the user
     # and displays message with it
