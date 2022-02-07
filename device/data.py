@@ -16,12 +16,12 @@ from credentials.firebase_config import config
 # handles the different states of the logic
 class Data:
     def __init__(self) -> None:
-        self.test = Test(TestMode.NORMAL)  # change this to set test mode
+        self.test = Test(TestMode.DISABLED)  # change this to set test mode
         self.uuid = self.test.id  # the uuid of the device
         self.state = self.test.state  # the current state of the logic
 
         self.can_open = False  # whether or not the device is allowed to be opened
-        self.device = Device(True)  # the device object
+        self.device = Device(False)  # the device object
         self.passwords = (
             []
         )  # the list of passwords that work, the first index is the default password
@@ -57,7 +57,7 @@ class Data:
     def setup(self):
         # generate uuid and show user
         print("generating uuid")
-        _uuid = uuid.uuid4()[0:4]
+        _uuid = str(uuid.uuid4())[0:4]
         self.device.show_message("Login code:")
         self.device.show_message(str(_uuid))
         time.sleep(10)

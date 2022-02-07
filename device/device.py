@@ -4,6 +4,8 @@ import base64
 from time import sleep
 from time import *
 import I2C_LCD_driver
+import spidev
+
 
 from states import State
 
@@ -21,6 +23,8 @@ class Device:
         GPIO.setup(18, GPIO.OUT)  # buzzer
         GPIO.setup(24, GPIO.OUT)  # LED
         GPIO.setup(22, GPIO.IN)  # switch
+        self.my_spi = spidev.SpiDev()  # create SPI object
+        self.my_spi.open(0, 0)  # open SPI port 0, device (CS) 0
 
     # logic that updates the device states
     def update_device_states(
@@ -56,7 +60,7 @@ class Device:
                 self.lock_device()
                 # TODO: check if potentiometer has reached threshold
                 # change the state to PASSWORD
-                if False:
+                if self.check_potentiometer:
                     change_state(State.PASSWORD)
 
     # output ------------------------------
@@ -85,7 +89,7 @@ class Device:
 
     # clears the lcd
     def clear_lcd(self):
-        self.display.lcd_display_string("           ")
+        self.display.lcd_display_string("                ")
 
     # input ------------------------------
     def check_for_open(self, on_is_open_changed):
@@ -102,6 +106,13 @@ class Device:
             self.is_open = new_bool
             on_is_open_changed(new_bool)
             self.test_print("is_open: " + str(new_bool))
+
+    # returns true if potentiometer is to the right
+    def check_potentiometer(self):
+        self.my_spi.max_speed_hz = 1350000
+        r = self.my_spi.xfer2([1, 8 + 1 << 4, 0])
+        data = ((r[1] & 3) << 8) + r[2]
+        return data >= 500
 
     # gets a input from the user
     def get_input(self) -> str:
