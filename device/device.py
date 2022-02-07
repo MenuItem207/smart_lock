@@ -16,6 +16,7 @@ class Device:
         self.is_test_mode = is_test_mode  # whether or not the device is in test mode
         self.has_taken_image = False  # whether or not the device has taken an image
         self.display = I2C_LCD_driver.lcd()  # lcd display on the raspberry pi
+        self.has_breached = False
 
         # initialise pi
         GPIO.setmode(GPIO.BCM)
@@ -39,10 +40,11 @@ class Device:
         if self.is_open:
             if can_open:
                 self.stop_alarm()
+                self.has_breached = False
                 self.has_taken_image = False
             else:
                 # breach
-                self.sound_alarm()
+                self.has_breached = True
                 if not self.has_taken_image:
                     subprocess.run(["fswebcam", "pic.jpg"])
                     with open("pic.jpg", "rb") as image:
@@ -55,13 +57,15 @@ class Device:
             if can_open:
                 self.unlock_device()
                 self.stop_alarm()
+                self.has_breached = False
                 self.has_taken_image = False
             else:
                 self.lock_device()
-                # TODO: check if potentiometer has reached threshold
-                # change the state to PASSWORD
             if self.check_potentiometer():
                 change_state(State.PASSWORD)
+
+        if self.has_breached:
+            self.sound_alarm()
 
     # output ------------------------------
     # sounds the alarm
