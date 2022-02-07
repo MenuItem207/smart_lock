@@ -147,7 +147,7 @@ class Device:
                         else:
                             # print (MATRIX[j][i]) #print the key pressed
                             fourdigits.append(str(MATRIX[j][i]))
-                        input = " ".join(fourdigits)
+                        input = "".join(fourdigits)
                         print(input)
                         self.display.lcd_display_string(input)
                         if len(fourdigits) > 3:

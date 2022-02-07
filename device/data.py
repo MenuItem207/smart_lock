@@ -43,7 +43,7 @@ class Data:
         # get the data from the database
         data = list(self.db.child("devices").child(self.uuid).get().val().items())
         self.can_open = json.loads(data[0][1])
-        self.passwords = data[3][1]
+        self.passwords = json.loads(data[3][1])
         self.state = State(data[4][1])
 
     # updates the current state of the logic
@@ -98,7 +98,7 @@ class Data:
 
     # called when the device state is change
     def change_state(self, state):
-        self.db.child("devices").child(self.uuid).update({"state": state})
+        self.db.child("devices").child(self.uuid).update({"state": state.value})
 
     # updates backend with new image
     def update_images(self, img):
