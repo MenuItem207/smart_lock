@@ -89,6 +89,7 @@ class Device:
     # shows a message on the lcd
     def show_message(self, message):
         self.test_print("Test message: " + message)
+        self.clear_lcd()
         self.display.lcd_display_string(message)
 
     # clears the lcd

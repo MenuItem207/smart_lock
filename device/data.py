@@ -59,6 +59,7 @@ class Data:
         print("generating uuid")
         _uuid = str(uuid.uuid4())[0:4]
         self.device.show_message("Login code:")
+        time.sleep(2)
         self.device.show_message(str(_uuid))
         time.sleep(10)
         self.uuid = _uuid
@@ -113,6 +114,7 @@ class Data:
     def run(self, old_state, on_state_changed):
         if old_state != self.state:
             on_state_changed(self.state)
+            self.device.show_message(self.state)
             print(self.state)
 
         if self.state == State.SETUP:
