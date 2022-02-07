@@ -60,8 +60,8 @@ class Device:
                 self.lock_device()
                 # TODO: check if potentiometer has reached threshold
                 # change the state to PASSWORD
-                if self.check_potentiometer:
-                    change_state(State.PASSWORD)
+            if self.check_potentiometer():
+                change_state(State.PASSWORD)
 
     # output ------------------------------
     # sounds the alarm
