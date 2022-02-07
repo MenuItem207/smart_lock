@@ -45,7 +45,7 @@ class Device:
             else:
                 # breach
                 self.has_breached = True
-                if not self.has_taken_image:
+                if not self.has_taken_image and False:
                     subprocess.run(["fswebcam", "pic.jpg"])
                     with open("pic.jpg", "rb") as image:
                         b64string = base64.b64encode(image.read()).decode("utf-8")

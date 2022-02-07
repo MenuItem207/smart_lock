@@ -8,6 +8,7 @@ from test import Test
 from test_mode import TestMode
 
 from states import State
+from states import stateToName
 from device import Device
 
 from credentials.firebase_config import config
@@ -58,14 +59,6 @@ class Data:
         # generate uuid and show user
         print("generating uuid")
         _uuid = str(uuid.uuid4())[0:4]
-        self.device.show_message("Login code:")
-        time.sleep(2)
-        self.device.show_message(str(_uuid))
-        time.sleep(10)
-        self.uuid = _uuid
-        self.device.show_message("Device operating")
-        time.sleep(2)
-        self.device.clear_lcd()
         # update backend
         print("creating user: %s", self.uuid)
         self.db.child("devices").child(_uuid).update(
@@ -78,6 +71,15 @@ class Data:
             }
         )
         print("created")
+        self.device.show_message("Login code:")
+        time.sleep(2)
+        self.device.show_message(str(_uuid))
+        time.sleep(10)
+        self.uuid = _uuid
+        self.device.show_message("Device operating")
+        time.sleep(2)
+        self.device.clear_lcd()
+
         self.update_state(State.IDLE)
         # init stream
         print("initialising stream")
@@ -114,7 +116,7 @@ class Data:
     def run(self, old_state, on_state_changed):
         if old_state != self.state:
             on_state_changed(self.state)
-            self.device.show_message(self.state)
+            self.device.show_message(stateToName[self.state])
             print(self.state)
 
         if self.state == State.SETUP:
