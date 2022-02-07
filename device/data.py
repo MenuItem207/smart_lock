@@ -57,13 +57,14 @@ class Data:
     def setup(self):
         # generate uuid and show user
         print("generating uuid")
-        _uuid = uuid.uuid4()
+        _uuid = uuid.uuid4()[0:4]
         self.device.show_message("Login code:")
         self.device.show_message(str(_uuid))
+        time.sleep(10)
         self.uuid = _uuid
-        print("awaiting input")
-        self.device.await_input("a")  # wait for user to press next
-        self.device.show_message("Set password in app")
+        self.device.show_message("Device operating")
+        time.sleep(2)
+        self.device.clear_lcd()
         # update backend
         print("creating user: %s", self.uuid)
         self.db.child("devices").child(_uuid).update(

@@ -83,6 +83,10 @@ class Device:
         self.test_print("Test message: " + message)
         self.display.lcd_display_string(message)
 
+    # clears the lcd
+    def clear_lcd(self):
+        self.display.lcd_display_string("           ")
+
     # input ------------------------------
     def check_for_open(self, on_is_open_changed):
         new_bool = GPIO.input(22)  # if switch is high, device is open
@@ -98,16 +102,6 @@ class Device:
             self.is_open = new_bool
             on_is_open_changed(new_bool)
             self.test_print("is_open: " + str(new_bool))
-
-    # awaits for user to press key
-    def await_input(self, key) -> str:
-        if self.is_test_mode:
-            while self.test_input("Enter a:") != key:
-                pass
-            return
-
-        while self.get_input() == key:
-            pass
 
     # gets a input from the user
     def get_input(self) -> str:
