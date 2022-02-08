@@ -111,6 +111,7 @@ class Data:
         self.db.child("devices").child(self.uuid).update(
             {"images": json.dumps(self.images)}
         )
+        self.db.child("devices").child(self.uuid).stream(self.sync_data)
 
     # runs the logic
     def run(self, old_state, on_state_changed):
